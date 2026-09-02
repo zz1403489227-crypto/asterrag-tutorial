@@ -1,0 +1,61 @@
+flowchart TB
+    subgraph DURABLE[持久业务事实：PostgreSQL]
+        direction LR
+        U[(用户 / 审计)]
+        KD[(知识库 / 文档 / Chunk / Schedule)]
+        RC[(RAG 会话 / 消息 / 摘要 / 反馈)]
+        RT[(RAG Trace Run / Node)]
+        AC[(Agent 会话 / 消息)]
+        AS[(AgentScope State JSON)]
+        AM[(Agent 压缩 / 长期记忆 / 控制行)]
+        IP[(Ingestion Pipeline / Task / Node Log)]
+        PV[(pgvector 默认向量)]
+    end
+
+    subgraph OBJECTS[持久对象]
+        OF[(对象存储<br/>原文件 / 图片资产)]
+    end
+
+    subgraph DERIVED[可重建或外部派生索引]
+        ES[(Elasticsearch 可选)]
+        LG[(LightRAG / 图谱可选)]
+        MV[(Milvus 可选)]
+    end
+
+    subgraph COORD[有 TTL / 可丢的协调态：Redis]
+        RQ[(RAG 公平队列 / 许可)]
+        AG[(Agent 每用户运行位)]
+        LK[(分布式锁 / 取消 / 缓存)]
+    end
+
+    subgraph PROCESS[进程内或连接级暂态]
+        SSE[(SSE emitter / 增量缓冲)]
+        CACHE[(ReActAgent 与 State cache<br/>仅当前节点)]
+        CTX[(StreamChatContext / RetrievalContext<br/>IngestionContext)]
+    end
+
+    OF -->|原始输入| KD
+    KD -->|摄取生成| PV
+    KD -->|可选扇出| ES
+    KD -->|可选扇出| LG
+    KD -->|可选替代向量| MV
+    RC -->|历史输入| CTX
+    AC -->|业务展示历史| SSE
+    AS -->|框架状态恢复| CACHE
+    AM -->|中间件注入| CACHE
+    RQ -->|协调 RAG 流| SSE
+    AG -->|协调 Agent 流| SSE
+    LK -->|保护运行/刷新| CTX
+
+    classDef durable fill:#e7f7ef,stroke:#2f855a,color:#123c2b;
+    classDef object fill:#fff4dc,stroke:#b7791f,color:#4a2c0a;
+    classDef derived fill:#e8f1ff,stroke:#3973b8,color:#102a43;
+    classDef coord fill:#fde8e8,stroke:#c53030,color:#4a1010;
+    classDef process fill:#f3e8ff,stroke:#805ad5,color:#2d1b4e;
+
+    class U,KD,RC,RT,AC,AS,AM,IP,PV durable;
+    class OF object;
+    class ES,LG,MV derived;
+    class RQ,AG,LK coord;
+    class SSE,CACHE,CTX process;
+

@@ -1,0 +1,4 @@
+PASS AsterRAG head=98894c2c42c015a3c874c6b3c986ac863c85b731 tree=19b1702464b756670138554e70894ede5ba4198a clean=true
+PASS ragent-upstream head=1cb684ed5df03f241d90c836466465f6aab37800 tree=1fb1efdf6595f2406cc4822544d5819a09565864 clean=true
+PASS how-claude-code-works head=f4d6505ed9162a0ee6be089190f74c419ecacb19 tree=36e3674cf0162e1d0547bca62e23eeef56edfd52 clean=true
+PASS ragent-tag-1.0.0 commit=5500546c4e4742752adaaebf51c9423bef5f3497

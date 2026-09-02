@@ -1,0 +1,80 @@
+sequenceDiagram
+    autonumber
+    actor User as 用户
+    participant AC as AgentChatController
+    participant AS as AgentChatServiceImpl
+    participant G as AgentRunGate
+    participant CS as AgentConversationService
+    participant MP as AgentMemoryPipeline
+    participant AP as ReActAgentProvider
+    participant CAT as AgentToolCatalog
+    participant RA as AgentScope ReActAgent
+    participant ST as PgAgentStateStore
+    participant KB as KnowledgeSearchFacade
+    participant EB as AgentStreamEventBridge
+    participant RH as AgentRunHandle
+    participant DB as PostgreSQL
+
+    User->>AC: GET /agent/v1/chat?question=...
+    Note over AC: Controller 仅 engine.type=agent 时装配
+    AC->>AS: streamChat(question, conversationId, emitter)
+    AS->>G: acquire(user, task, conversation)
+    alt 同用户已有运行中流
+        G-->>User: ClientException（副作用前拒绝）
+    else 获得运行位
+        AS-->>User: META(conversationId, taskId)
+        AS->>CS: touchConversation
+        AS->>MP: ensureExtractionBaseline（若开启）
+        AS->>CS: addUserMessage
+        CS->>DB: Agent conversation + USER message
+        AS->>RH: new handle + release hooks
+        Note over RH: release gate → evict local state cache<br/>→ schedule memory extraction
+        AS->>AP: getAgent()
+        AP->>CAT: resolve catalog + fingerprint
+        CAT-->>AP: knowledge / memory / MCP tool snapshot
+        AP->>RA: cached or rebuilt ReActAgent
+        AS->>EB: new bridge + register task
+        AS->>RA: streamEvents(question, RuntimeContext)
+
+        loop ReAct iterations
+            RA-->>EB: thinking / text / tool / hint / result event
+            EB-->>User: MESSAGE / TOOL / HINT
+            alt Agent 选择 search_knowledge
+                RA->>KB: search(query, recentTurns)
+                KB->>KB: rewrite → KB intents → retrieve → synthesize
+                KB-->>RA: evidence answer text
+            else Agent 选择 MCP tool
+                RA->>CAT: McpToolBridge → existing MCP executor
+                CAT-->>RA: ToolResultBlock
+            end
+        end
+
+        Note over RA,ST: PgAgentStateStore 是框架持久化适配边界<br/>AgentScope 具体 save/load 时点待依赖源码核验
+        RA-->>ST: AgentScope 触发的 StateStore 调用（时点未在应用层确定）
+        ST->>DB: opaque AgentScope JSON
+
+        alt 正常完成
+            RA-->>EB: onComplete
+            EB->>CS: assistant=NORMAL + blocks
+            CS->>DB: Agent assistant message
+            EB-->>User: FINISH → DONE
+            EB->>RH: complete(body)
+        else 用户停止 / 连接终止
+            AS->>RH: interruptUpstream<br/>dispose + agent.interrupt
+            EB->>CS: 有正文/思考/Block时 assistant=INTERRUPTED
+            EB-->>User: CANCEL → DONE
+            EB->>RH: cancel(body)
+        else Agent 流错误
+            EB->>RH: fail(error)
+            RH-->>User: fail emitter
+            Note over EB,DB: 当前业务桥不保存 assistant 失败消息
+        end
+
+        RH->>RH: CAS 只允许一个终态
+        RH->>AS: unregister task + run release hooks
+        AS->>G: compareAndSet 释放自己的运行位
+        AS->>AP: evictStateCache（仅当前节点）
+        AS->>MP: 异步长期记忆抽取（若开启）
+    end
+
+    Note over RA,ST: 应用层不能单独证明框架在每个取消/异常时点都已成功保存 State，需依赖源码与运行证据

@@ -1,0 +1,101 @@
+flowchart TB
+    USER([用户 / 管理员]) --> UI[React 控制台]
+    UI --> API[Spring MVC API<br/>/api/ragent]
+
+    subgraph WRITE[知识文档主写路径]
+        direction LR
+        WAPI[KnowledgeDocument API] --> UPLOAD[上传 / 远程来源]
+        UPLOAD --> OBJ[(S3 兼容对象存储<br/>原文件 / 解析资产)]
+        UPLOAD --> DOC[(t_knowledge_document<br/>PENDING)]
+        DOC --> START[显式开始分块]
+        START --> MQ[(RocketMQ<br/>事务消息)]
+        MQ --> CONSUMER[Chunk Consumer]
+        CONSUMER --> KERNEL[DefaultIngestionKernel<br/>MIME → Parse → Chunk]
+        KERNEL --> EMBED[Embedding]
+        EMBED --> SINK[ChunkIndexWriter<br/>整体替换全部落点]
+        SINK --> CHUNKDB[(关系 Chunk)]
+        SINK --> VECTOR[(pgvector 默认<br/>Milvus 可选)]
+        KERNEL -. outcome / error .-> SETTLE[KnowledgeDocumentService<br/>SUCCESS / FAILED 收尾]
+        SETTLE --> DOCLOG[(文档终态 / 分块日志)]
+    end
+
+    subgraph GENERIC[独立通用入库子系统]
+        direction LR
+        IAPI["/ingestion/tasks"] --> PDEF[(PipelineDefinition)]
+        PDEF --> IENGINE[IngestionEngine<br/>单根 nextNodeId 链]
+        IENGINE --> INODES[Fetcher / Parser / Enhancer<br/>Chunker / Enricher / Indexer]
+        IENGINE --> ITASK[(Task / Node Log)]
+    end
+
+    subgraph RAGPATH[确定性 RAG 读路径]
+        direction LR
+        RAPI["/rag/v3/chat"] --> LIMIT[Redis 公平排队<br/>全局并发许可]
+        LIMIT --> TRACE[Trace Run]
+        TRACE --> MEMORY[会话记忆<br/>保存 USER]
+        MEMORY --> REWRITE[改写 / 拆分]
+        REWRITE --> INTENT[意图 / 引导 / 路由]
+        INTENT --> RETRIEVE[RetrievalEngine<br/>子问题并行]
+        RETRIEVE --> CHANNELS[SearchChannel 并行<br/>Vector 默认；Keyword / Graph / Web 可选]
+        CHANNELS --> POST[去重 → RRF → Rerank<br/>→ 证据门 → 富化]
+        POST --> PROMPT[来源编号 / Grounding<br/>结构化 Prompt]
+        PROMPT --> LLM[LLMService<br/>模型路由 / 首包 / 熔断]
+        LLM --> RAG_SSE[RAG EventHandler<br/>SSE + assistant 落库]
+    end
+
+    subgraph AGENTPATH[ReAct Agent 分支]
+        direction LR
+        AAPI["/agent/v1/chat<br/>engine.type=agent"] --> GATE[AgentRunGate<br/>每用户一条流]
+        GATE --> REACT[AgentScope ReActAgent<br/>动态循环]
+        REACT --> CATALOG[AgentToolCatalog]
+        CATALOG --> KTOOL[search_knowledge]
+        CATALOG --> MCPTOOL[MCP tools]
+        CATALOG --> MEMTOOL[memory flush 可选]
+        KTOOL --> FACADE[KnowledgeSearchFacade<br/>RAG 检索窄门面]
+        FACADE --> RETRIEVE
+        REACT --> ASTATE[(Agent State<br/>压缩 / 长期记忆)]
+        REACT --> AGENT_SSE[Agent EventBridge<br/>SSE + blocks + assistant]
+        AGENT_SSE --> HANDLE[AgentRunHandle<br/>complete / cancel / fail]
+    end
+
+    API --> WAPI
+    API --> IAPI
+    API --> RAPI
+    API --> AAPI
+
+    subgraph STATE[共享状态与基础设施]
+        direction LR
+        PG[(PostgreSQL<br/>31 表业务事实 + Trace + Agent State)]
+        REDIS[(Redis / Redisson<br/>协调态 / 锁 / 许可 / 运行位)]
+        OPTIONAL[(可选派生后端<br/>ES / LightRAG / Web / Milvus)]
+        PROCESS[(进程内状态<br/>Agent cache / in-flight buffers)]
+    end
+
+    DOC --> PG
+    DOCLOG --> PG
+    CHUNKDB --> PG
+    VECTOR --> PG
+    PDEF --> PG
+    ITASK --> PG
+    MEMORY --> PG
+    TRACE --> PG
+    RAG_SSE --> PG
+    ASTATE --> PG
+    AGENT_SSE --> PG
+    LIMIT --> REDIS
+    GATE --> REDIS
+    CHANNELS --> OPTIONAL
+    REACT --> PROCESS
+
+    DOC -.->|ProcessMode PIPELINE 当前暂停| IENGINE
+
+    classDef entry fill:#e8f1ff,stroke:#3973b8,color:#102a43;
+    classDef write fill:#fff4dc,stroke:#b7791f,color:#4a2c0a;
+    classDef rag fill:#e7f7ef,stroke:#2f855a,color:#123c2b;
+    classDef agent fill:#f3e8ff,stroke:#805ad5,color:#2d1b4e;
+    classDef state fill:#f4f4f5,stroke:#52525b,color:#27272a;
+
+    class UI,API,WAPI,IAPI,RAPI,AAPI entry;
+    class UPLOAD,DOC,START,MQ,CONSUMER,KERNEL,EMBED,SINK,SETTLE,DOCLOG,PDEF,IENGINE,INODES,ITASK write;
+    class LIMIT,TRACE,MEMORY,REWRITE,INTENT,RETRIEVE,CHANNELS,POST,PROMPT,LLM,RAG_SSE rag;
+    class GATE,REACT,CATALOG,KTOOL,MCPTOOL,MEMTOOL,FACADE,ASTATE,AGENT_SSE,HANDLE agent;
+    class OBJ,CHUNKDB,VECTOR,PG,REDIS,OPTIONAL,PROCESS state;

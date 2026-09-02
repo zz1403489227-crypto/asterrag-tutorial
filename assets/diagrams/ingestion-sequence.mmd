@@ -1,0 +1,68 @@
+sequenceDiagram
+    autonumber
+    actor Admin as 管理员
+    participant KC as KnowledgeDocumentController
+    participant KS as KnowledgeDocumentServiceImpl
+    participant OS as FileStorageService
+    participant PR as ParserRegistry
+    participant DB as PostgreSQL
+    participant MQP as MessageQueueProducer
+    participant MQ as RocketMQ
+    participant CC as KnowledgeDocumentChunkConsumer
+    participant IK as DefaultIngestionKernel
+    participant PE as Parser/Chunk/Embedding
+    participant IW as ChunkIndexWriter
+
+    Admin->>KC: POST /knowledge-base/{kb-id}/docs/upload
+    KC->>KS: upload(kbId, request, file)
+    KS->>KS: 校验知识库、来源、调度、摄取规格
+    KS->>OS: 保存原文件
+    OS-->>KS: StoredFileDTO(url, mime, size)
+    KS->>PR: canParse(mime)
+    alt MIME 不支持
+        KS->>OS: deleteByUrl(url)
+        KS-->>Admin: ClientException
+    else MIME 支持
+        KS->>DB: INSERT document(status=PENDING)
+        KS-->>Admin: KnowledgeDocumentVO
+    end
+
+    Note over Admin,DB: 上传成功只证明原文件与文档元数据存在，不证明已经可检索
+
+    Admin->>KC: POST /knowledge-base/docs/{doc-id}/chunk
+    KC->>KS: startChunk(docId)
+    KS->>MQP: sendInTransaction(event)
+    MQP->>DB: 条件更新 document=RUNNING<br/>并 upsert schedule
+    alt 文档已经 RUNNING
+        DB-->>Admin: 拒绝重复启动
+    else 本地事务提交
+        MQP->>MQ: KnowledgeDocumentChunkEvent
+        KC-->>Admin: Result.success
+    end
+
+    MQ->>CC: onMessage(event)
+    CC->>KS: executeChunk(docId)
+    KS->>DB: INSERT chunk_log(RUNNING)
+    alt ProcessMode.PIPELINE
+        KS->>DB: document=FAILED<br/>chunk_log=FAILED
+        Note over KS: 当前显式失败：管道模式重构中
+    else 直接分块
+        KS->>OS: openStream(fileUrl)
+        OS-->>KS: bytes
+        KS->>IK: run(doc, bytes, spec, target)
+        IK->>PE: MIME detect → parseStructured<br/>→ chunk → embed
+        PE-->>IK: EmbeddedChunk list
+        IK->>IW: replaceDocument(target, doc, chunks)
+        IW->>DB: 关系 Chunk + pgvector 默认落点
+        IW-->>IK: replace complete
+        IK-->>KS: IngestionOutcome + timings
+        alt 成功
+            KS->>DB: document=SUCCESS<br/>mime + chunkCount
+            KS->>DB: chunk_log=SUCCESS + timings
+        else 任一步骤异常
+            KS->>DB: document=FAILED
+            KS->>DB: chunk_log=FAILED + error
+        end
+    end
+
+    Note over KS,IW: 数据库终态、远端派生索引和真实召回仍要分别验证

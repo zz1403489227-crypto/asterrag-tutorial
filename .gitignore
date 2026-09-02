@@ -1,0 +1,11 @@
+# Frozen source checkouts and local runtime work are intentionally not vendored.
+sources/*
+!sources/README.md
+runtime-work/
+
+# Local/editor artifacts
+.DS_Store
+.idea/
+.vscode/
+*.swp
+

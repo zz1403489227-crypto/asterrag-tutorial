@@ -1,0 +1,79 @@
+sequenceDiagram
+    autonumber
+    actor User as 用户
+    participant RC as RAGChatController
+    participant RS as RAGChatServiceImpl
+    participant EH as StreamChatEventHandler
+    participant QL as ChatQueueLimiter
+    participant TR as StreamChatTraceRunner
+    participant PL as StreamChatPipeline
+    participant MEM as ConversationMemoryService
+    participant RW as Rewrite/Intent/Guidance
+    participant RE as RetrievalEngine
+    participant MC as MultiChannelRetrievalEngine
+    participant PP as PostProcessors
+    participant AI as LLMService
+    participant DB as PostgreSQL
+
+    User->>RC: GET /rag/v3/chat?question=...
+    RC->>RS: streamChat(question, conversationId, deepThinking, emitter)
+    RS->>EH: create handler
+    EH-->>User: META(conversationId, taskId)
+    EH->>EH: register task
+    RS->>QL: enqueue(...)
+
+    alt 排队超时或入口线程池拒绝
+        QL->>DB: 保存 USER + REJECTED assistant
+        QL-->>User: META → REJECT → FINISH → DONE
+    else 获得全局许可
+        QL->>TR: run(...)
+        TR->>DB: Trace Run=RUNNING
+        TR->>PL: execute(ctx, trace-aware callback)
+        PL->>MEM: load history
+        MEM-->>PL: history
+        PL->>MEM: append USER
+        MEM->>DB: conversation/message
+        PL->>RW: rewriteWithSplit → resolve intents → guidance
+
+        alt 歧义引导
+            PL-->>EH: prompt content + complete
+        else 全部 System-only
+            PL->>AI: stream system response
+        else 需要检索
+            PL->>RE: retrieve(subIntents)
+            par 子问题 / 通道并行
+                RE->>MC: vector channel（默认）
+            and 可选通道
+                RE->>MC: keyword / graph / web（默认关闭）
+            end
+            MC->>PP: 去重1 → 融合5 → Rerank10<br/>→ 证据门15 → 富化20
+            PP-->>RE: final evidence
+            RE-->>PL: RetrievalContext
+            alt 空检索
+                PL-->>EH: 未检索到... + complete
+            else 有证据
+                PL->>PL: 来源编号 + Grounding + Prompt
+                PL->>AI: streamChat(ChatRequest)
+                loop 模型流事件
+                    AI-->>EH: thinking/content
+                    EH-->>User: MESSAGE
+                end
+            end
+        end
+
+        alt 正常完成
+            EH->>DB: assistant=NORMAL + sources + grounding
+            EH-->>User: FINISH → DONE
+            EH->>EH: unregister + complete
+            TR->>DB: Trace Run=SUCCESS
+        else 用户取消
+            EH->>DB: 非空累计正文时 assistant=INTERRUPTED
+            EH-->>User: CANCEL → DONE
+            Note over TR: 取消的 Trace 终态待运行证据确认
+        else 流失败
+            EH->>EH: unregister + fail emitter
+            TR->>DB: Trace Run=ERROR
+            Note over EH,DB: 当前 Handler 不保存 assistant 失败消息
+        end
+    end
+
