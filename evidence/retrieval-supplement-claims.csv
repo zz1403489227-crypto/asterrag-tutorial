@@ -1,0 +1,20 @@
+claim_id,chapter,path,anchor,claim
+RS-001,21,resources/database/schema_pg.sql,vector(1536),PG 保存 1536 维稠密向量
+RS-002,21,resources/database/schema_pg.sql,USING hnsw (embedding vector_cosine_ops),PG Schema 声明余弦 HNSW
+RS-003,21,rag/src/main/java/com/nageoffer/ai/ragent/rag/core/vector/PgVectorStoreAdmin.java,idx_kv_embedding_hnsw,管理类索引名与 Schema 名不同
+RS-004,21,rag/src/main/java/com/nageoffer/ai/ragent/rag/core/vector/PgVectorRetrieverService.java,SET hnsw.ef_search = 200,查询代码发出搜索宽度设置
+RS-005,21,rag/src/main/java/com/nageoffer/ai/ragent/rag/core/vector/PgVectorRetrieverService.java,SET hnsw.iterative_scan = relaxed_order,查询代码发出迭代扫描设置
+RS-006,22,rag/src/main/java/com/nageoffer/ai/ragent/rag/core/keyword/EsKeywordIndexService.java,".properties(""content"", p -> p.text",ES 正文是 text 映射
+RS-007,22,rag/src/main/java/com/nageoffer/ai/ragent/rag/core/keyword/EsKeywordRetrieverService.java,"mt.field(""content"").query(query)",ES 使用正文 match 检索
+RS-008,22,rag/src/main/java/com/nageoffer/ai/ragent/rag/core/vector/decorator/KeywordSyncingVectorStoreService.java,syncKeyword,关键词同步异常不回滚向量主操作
+RS-009,23,rag/src/main/java/com/nageoffer/ai/ragent/rag/core/graph/LightRagClient.java,"body.put(""only_need_context"", true)",LightRAG 查询只取上下文
+RS-010,23,rag/src/main/java/com/nageoffer/ai/ragent/rag/core/graph/LightRagClient.java,parseReferences,图谱证据归属在响应解析阶段切分
+RS-011,23,rag/src/main/java/com/nageoffer/ai/ragent/rag/core/retrieval/channel/GraphSearchChannel.java,FILTER_TOPK_BOOST = 3,定向图谱请求额度三倍放大
+RS-012,23,rag/src/main/java/com/nageoffer/ai/ragent/rag/core/vector/decorator/GraphSyncingVectorStoreService.java,delegate.updateChunk,片段更新只委托主操作不单独同步图谱
+RS-013,23,rag/src/main/java/com/nageoffer/ai/ragent/rag/config/GraphSyncVectorStorePostProcessor.java,lightRagClientProvider.getIfAvailable(),客户端存在时织入图谱写同步
+RS-014,24,rag/src/main/java/com/nageoffer/ai/ragent/rag/core/retrieval/postprocessor/FusionPostProcessor.java,weight / (k + rank + 1),RRF 按从一开始的名次计算贡献
+RS-015,24,rag/src/main/java/com/nageoffer/ai/ragent/rag/core/retrieval/postprocessor/EvidenceGatePostProcessor.java,if (topScore == null),证据门无有效精排分时放行
+RS-016,24,framework/src/main/java/com/nageoffer/ai/ragent/framework/convention/RetrievedChunkKey.java,chunk.getId(),去重优先按 id 而非语义等价
+RS-017,25,agent/src/main/java/com/nageoffer/ai/ragent/agent/tool/KnowledgeSearchTool.java,"""additionalProperties"", false",知识工具只暴露 query 且禁止额外参数
+RS-018,25,rag/src/main/java/com/nageoffer/ai/ragent/rag/service/KnowledgeSearchFacade.java,return llmService.chat,知识工具内部调用模型合成答案文本
+RS-019,25,rag/src/main/java/com/nageoffer/ai/ragent/rag/service/KnowledgeSearchFacade.java,stripDocIdAnchors,工具合成前去掉内部 docId 锚点

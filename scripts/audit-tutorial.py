@@ -38,12 +38,18 @@ CHAPTERS = [
     "18-frontend-state-and-evidence.md",
     "19-configuration-and-failure-reasoning.md",
     "20-interview-narrative.md",
+    "21-hnsw-vector-index.md",
+    "22-es-bm25-retrieval.md",
+    "23-lightrag-graph-retrieval.md",
+    "24-hybrid-retrieval-to-evidence.md",
+    "25-agentic-rag-interview-focus.md",
 ]
 
 APPENDICES = [
     "interview-question-bank.md",
     "glossary.md",
     "source-index.md",
+    "retrieval-implementation-notes.md",
 ]
 
 DIAGRAMS = [

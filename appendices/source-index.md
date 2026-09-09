@@ -1,5 +1,21 @@
 # 附录 C：源码导航索引
 
+原理和完整流程请先读 [第 21～25 章](../docs/21-hnsw-vector-index.md)；检索配置与具体分支集中见 [附录 D](retrieval-implementation-notes.md)。本索引用于读懂之后定位实现。
+
+## 检索与 Agent 面试优先导航
+
+| 你要解释的问题 | 入口 / 下一站 | 讲解 |
+|---|---|---|
+| HNSW 到底在哪里建？ | `schema_pg.sql` → `PgVectorStoreAdmin.ensureVectorSpace` | [21](../docs/21-hnsw-vector-index.md) |
+| 向量怎样查？ | `PgVectorRetrieverService.retrieveByVector` → `queryByCollections` | [21](../docs/21-hnsw-vector-index.md) |
+| ES 是存文本还是存向量？ | `EsKeywordIndexService.ensureSharedIndex` → `buildDocument` | [22](../docs/22-es-bm25-retrieval.md) |
+| BM25 怎样进入候选？ | `KeywordSearchChannel.search` → `EsKeywordRetrieverService.search` | [22](../docs/22-es-bm25-retrieval.md) |
+| 图谱资料如何进入、出来？ | `GraphSyncingVectorStoreService` → `LightRagClient` → `GraphSearchChannel` | [23](../docs/23-lightrag-graph-retrieval.md) |
+| 三路怎样统一排名与截断？ | `MultiChannelRetrievalEngine` → `FusionPostProcessor` → `RerankPostProcessor` | [24](../docs/24-hybrid-retrieval-to-evidence.md) |
+| Agent 实际拿回什么？ | `KnowledgeSearchTool` → `KnowledgeSearchFacade.search` | [25](../docs/25-agentic-rag-interview-focus.md) |
+
+完整冻结路径与增补论断见 [增补源码映射](../evidence/retrieval-supplement-source-map.md)。
+
 > 这不是按字母排列的类清单，而是“想回答什么问题，应该从哪里进入”的路线图。所有路径相对于冻结 AsterRAG 仓库根目录。
 
 ## C.1 五分钟定位法

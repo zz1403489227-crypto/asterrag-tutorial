@@ -1,5 +1,7 @@
 # 第 11 章：多路召回怎样协作——预算、并行通道与局部降级
 
+> 增补衔接：本章侧重通道合同与执行方式。检索原理按 [HNSW](21-hnsw-vector-index.md) → [ES / BM25](22-es-bm25-retrieval.md) → [LightRAG](23-lightrag-graph-retrieval.md) 阅读，再用 [第 24 章](24-hybrid-retrieval-to-evidence.md) 的连续案例串联。本章列出的是支持的通道，不表示默认全部开启。
+
 > 第 10 章为每个子问题算出了意图和检索作用域。本章进入真正的“取证”阶段：向量、关键词、图谱和 Web 怎样读同一份 `SearchContext`，怎样并行运行，怎样把某一路失败限制在该路，以及 20/40/10 三段预算为什么不能共用一个 topK。
 
 ## 11.1 两层并行，先看全图

@@ -1,6 +1,22 @@
 # AsterRAG 源码级面试教程
 
-> 学习目标：不以部署复现为目标，而是能从总体架构、真实调用链、状态 owner、失败语义和设计权衡五个层次，准确解释 AsterRAG 如何工作。
+> 学习目标：不以部署复现为目标，而是能从总体架构、真实调用链、状态 owner、失败语义和设计权衡五个层次，准确解释 AsterRAG 如何工作。当前优先主线是 Agent 的工具决策与 RAG 的证据处理；后端组件作为必要支撑按需阅读。
+
+## 本次增补：Agent / RAG 面试重点
+
+第 21～25 章已按“原理 → 建库过程 → 查询过程 → 项目应用”重写，用林辰、星河项目和差旅审批这一组资料贯穿全篇。先讲明白数据怎样组织、查询怎样执行，再进入源码；配置与边缘细节集中到附录 D。原有 0～20 章保留，不重编号。
+
+推荐主线：**1 → 14 → 15 → 7 → 21 → 22 → 23 → 24 → 16 → 25**。先理解 Agent 调什么工具，再理解工具内的检索如何工作；9、10、12、13 章用于进一步追问。Redis、RocketMQ、认证、前端和部署不再占据优先阅读路线，可按需回查第 2～6、8、17～19 章。
+
+| 增补章 | 重点 |
+|---|---|
+| [21：HNSW——给向量修一张找路的地图](docs/21-hnsw-vector-index.md) | 为什么需要索引；怎样分层、插入和连边；查询怎样保留候选细找 |
+| [22：BM25——用词语建立找资料的路](docs/22-es-bm25-retrieval.md) | 倒排表如何建立；词频、IDF、长度怎样共同打分；查询怎样执行 |
+| [23：LightRAG——把散落的文字连成知识](docs/23-lightrag-graph-retrieval.md) | 实体关系抽取与合并；实体 / 关系向量索引；local/global/hybrid；回到原文回答 |
+| [24：从三路候选到答案证据](docs/24-hybrid-retrieval-to-evidence.md) | 为什么要融合和精排；RRF 如何计算；材料怎样变成回答上下文 |
+| [25：Agent 怎样使用 RAG](docs/25-agentic-rag-interview-focus.md) | 模型、执行循环、工具结果如何配合；知识能力怎样支持后续行动 |
+
+默认仍是稠密向量检索；BM25 和 LightRAG 是已有但默认关闭的可选能力。阅读侧重变化不等于已开启功能、完成调优或取得评测结果。增补计划见 [RETRIEVAL_SUPPLEMENT_PLAN.md](RETRIEVAL_SUPPLEMENT_PLAN.md)。
 
 ## 教程讲的是哪个版本
 
@@ -37,7 +53,7 @@ AsterRAG 基于 Apache-2.0 的 `nageoffer/ragent` 学习和二次开发。本教
 底部 owner：PostgreSQL | Object Storage | Redis | Derived Index | Process/UI State
 ```
 
-## 三条学习路线
+## 原有三条完整学习路线（按需回查）
 
 ### 30 分钟全景线
 
@@ -114,6 +130,10 @@ AsterRAG 基于 Apache-2.0 的 `nageoffer/ragent` 学习和二次开发。本教
 | [第 19 章：配置组装与故障推演](docs/19-configuration-and-failure-reasoning.md) | 某能力到底是存在、装配还是运行 | POM/YAML/Bean/分支四层证据和默认拓扑故障树 |
 | [第 20 章：把源码理解变成面试叙事](docs/20-interview-narrative.md) | 怎样在 30 秒、2 分钟和 5 分钟讲清项目 | 口述模板、技术难点、追问、权衡和诚实边界 |
 
+### 第六部分：Agent / RAG 面试增补篇
+
+第 21～25 章的入口位于本页最上方。它们不另起一套系统，而是把第 1 章的 Agent → Knowledge Tool → Retrieval 区域放大，补足原章节对检索原理的讲解。
+
 ## 附录
 
 | 附录 | 用法 |
@@ -121,6 +141,7 @@ AsterRAG 基于 Apache-2.0 的 `nageoffer/ragent` 学习和二次开发。本教
 | [附录 A：100 道分层面试追问](appendices/interview-question-bank.md) | 遮住答案口述，再核必答点和源码锚点 |
 | [附录 B：术语表](appendices/glossary.md) | 快速区分名字相似但 owner/寿命不同的概念 |
 | [附录 C：源码导航索引](appendices/source-index.md) | 从“想回答什么问题”反向找入口、主链和终局 |
+| [附录 D：检索实现备查](appendices/retrieval-implementation-notes.md) | 原理读懂后再查配置、源码入口和具体实现分支 |
 
 ## 图表索引
 
@@ -162,6 +183,7 @@ AsterRAG 基于 Apache-2.0 的 `nageoffer/ragent` 学习和二次开发。本教
 | [architecture-node-map.md](evidence/architecture-node-map.md) | 总体图每个节点的 owner、输入、输出与失败边界 |
 | [reference-drift.md](evidence/reference-drift.md) | 作者旧课程/页面与冻结源码的版本漂移 |
 | [test-matrix.md](evidence/test-matrix.md) | 测试类存在、聚焦测试和 Live/集成边界 |
+| [retrieval-supplement-source-map.md](evidence/retrieval-supplement-source-map.md) | 第 21～25 章的实现事实、算法背景与静态复核范围 |
 | [diagram-qa.md](evidence/diagram-qa.md) | 5 张图的源文件、渲染与视觉检查 |
 
 详细写作计划见 [TUTORIAL_DEVELOPMENT_PLAN.md](TUTORIAL_DEVELOPMENT_PLAN.md)，实际执行记录见 [PROGRESS.md](PROGRESS.md)。
@@ -178,4 +200,3 @@ AsterRAG 基于 Apache-2.0 的 `nageoffer/ragent` 学习和二次开发。本教
 - 未来可改进点已经由当前 fork 完成。
 
 这些边界不会削弱面试叙事，反而让你的回答更精确、更经得起追问。
-

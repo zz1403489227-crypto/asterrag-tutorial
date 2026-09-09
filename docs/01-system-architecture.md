@@ -2,6 +2,29 @@
 
 > 这一章是全书的地图。先不钻进 Parser、Rerank 或 AgentScope 的内部，只回答一个问题：一份资料怎样变成可检索证据，一次问题又怎样变成有来源的回答？
 
+## Agent / RAG 优先读法：先把工具与证据连起来
+
+2026-09-08 增补篇将本章主图中的两个区域放大：外层 Agent 的工具决策，以及内层 RAG 的知识处理。可以先记住这张职责地图，再读下方完整系统架构：
+
+```text
+用户问题 → AgentScope ReAct（动态选择工具 / 参数）
+                ├─ MCP / 记忆等工具
+                └─ search_knowledge(query)
+                      → 改写、KB 意图与 scope
+                      → 已启用通道并行检索
+                          ├─ 稠密向量：pgvector + HNSW（默认路径）
+                          ├─ 关键词：ES / BM25（可选，默认关闭）
+                          └─ 图谱：LightRAG（可选，默认关闭）
+                      → 去重、RRF、Rerank、证据门
+                      → KB 答案合成 → 工具文本返回 Agent
+```
+
+这张图从上往下回答三个问题：下一步做什么，怎样完成一次知识查询，资料怎样组织和找回。Agent 选择工具和问题，RAG 管线准备证据，底层索引与图谱提供查找方式。工具结果回到 Agent 后，又成为它决定下一步的信息。
+
+第 21～25 章用同一组人物、项目和制度资料把三层串起来：先给向量建立导航图，再给词语建立倒排表，再把实体关系连接起来，最后解释候选怎样成为 Agent 可使用的知识结果。配置和实现细节另见 [附录 D](../appendices/retrieval-implementation-notes.md)。
+
+沿图深入：[HNSW](21-hnsw-vector-index.md) → [BM25](22-es-bm25-retrieval.md) → [LightRAG](23-lightrag-graph-retrieval.md) → [证据决策链](24-hybrid-retrieval-to-evidence.md) → [Agent 与面试表达](25-agentic-rag-interview-focus.md)。Redis、RocketMQ 等仍在下方完整架构里，但本次推荐路线把它们作为支撑，而不是开场重点。
+
 ## 1.1 不要从包名开始，先找三个入口
 
 如果一上来就顺着 664 个主 Java 文件阅读，你很快会被同名的 Pipeline、Message、State、Tool 和 Config 淹没。更好的入口是三类真实 HTTP 请求：
@@ -516,4 +539,3 @@ HTTP 入口 ───────┤
 4. 底部所有数据必须按 owner 分类，否则无法说清失败和恢复。
 
 下一章把这些架构节点放回仓库：它们为什么分布在 7 个 Maven 模块中，又为什么实际只有一个主应用进程和一个独立 MCP Server 边界。
-
