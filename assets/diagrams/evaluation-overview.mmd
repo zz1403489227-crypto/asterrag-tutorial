@@ -1,0 +1,17 @@
+flowchart TB
+    K[知识库文档：业务事实] --> S[Ragent / AsterRAG<br/>被评系统]
+    D[评估集：问题、标准意图、标准文档、参考答案] --> R[run：录制器]
+    R --> C[聊天接口<br/>回答、状态、时间]
+    R --> E[检索旁路<br/>意图、文档、文本片段]
+    C --> S
+    E --> S
+    D --> V[EvalRecord：一题一份记录]
+    S --> V
+    V --> M[score：确定性指标]
+    V --> J[score：RAGAS 模型裁判]
+    M --> O[MetricResult / _scores.json]
+    J --> O
+    O --> P[report：报告生成<br/>总览、逐题表、失败案例、演示页]
+    V --> P
+    H[人工复核分] --> P
+    P --> A[定位问题与比较方案]

@@ -11,6 +11,9 @@ diagram_sources=(
   "assets/diagrams/rag-sequence.mmd"
   "assets/diagrams/agent-sequence.mmd"
   "assets/diagrams/state-ownership.mmd"
+  "assets/diagrams/evaluation-overview.mmd"
+  "assets/diagrams/evaluation-recording.mmd"
+  "assets/diagrams/evaluation-diagnosis.mmd"
 )
 
 cd "$workspace_dir"
@@ -23,4 +26,3 @@ for diagram_source in "${diagram_sources[@]}"; do
     -i "$diagram_source" -o "$png_output" -b white -w 2400
   printf 'PASS rendered %s -> %s, %s\n' "$diagram_source" "$svg_output" "$png_output"
 done
-

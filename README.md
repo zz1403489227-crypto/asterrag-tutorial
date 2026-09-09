@@ -18,7 +18,22 @@
 
 默认仍是稠密向量检索；BM25 和 LightRAG 是已有但默认关闭的可选能力。阅读侧重变化不等于已开启功能、完成调优或取得评测结果。增补计划见 [RETRIEVAL_SUPPLEMENT_PLAN.md](RETRIEVAL_SUPPLEMENT_PLAN.md)。
 
-## 教程讲的是哪个版本
+## 新增评测篇：从系统表现到改进判断
+
+沿 **26 → 27 → 28 → 29 → 30 → 31** 顺序阅读。用官方评估集中的手机参数问答贯穿：先出题与定义标准，再收集回答和材料，随后手算指标、理解模型裁判，最后分析报告与设计改进。无需真实运行评测。
+
+| 章节 | 重点 |
+|---|---|
+| [26：评测全景](docs/26-evaluation-overview.md) | 总体架构；被评系统、录制器与裁判的分工 |
+| [27：评估集](docs/27-evaluation-dataset.md) | 怎样定义好答案；must/nice；场景覆盖与参考质量 |
+| [28：录制过程](docs/28-evaluation-recording.md) | SSE 回答、检索旁路、两次请求与记录；重评和重跑 |
+| [29：确定性指标](docs/29-evaluation-deterministic-metrics.md) | Hit、Recall、MRR 手算；意图、行为、时间与分母 |
+| [30：RAGAS 模型裁判](docs/30-evaluation-ragas-judge.md) | 事实拆分、证据支持、排序与语义比较；五项指标怎样算 |
+| [31：诊断与面试](docs/31-evaluation-diagnosis-and-interview.md) | 人工复核、对比和消融；检索改进与 Agent 评测设计 |
+
+这六章研究作者的 `nageoffer/ragenteval`，不是把评测器当成产品内模块。源码入口与版本细节统一收在[附录 E](appendices/evaluation-implementation-notes.md)，计划见 [EVALUATION_SUPPLEMENT_PLAN.md](EVALUATION_SUPPLEMENT_PLAN.md)。
+
+## 教程版本与资料基准
 
 | 资料 | 冻结版本 | 作用 |
 |---|---|---|
@@ -26,6 +41,7 @@
 | `nageoffer/ragent` 上游 | `1cb684ed5df03f241d90c836466465f6aab37800` | fork 来源与同源历史 |
 | Ragent `1.0.0` | `5500546c4e4742752adaaebf51c9423bef5f3497` | 作者旧课程版本对照 |
 | how-claude-code-works | `f4d6505ed9162a0ee6be089190f74c419ecacb19` | 只参考教学信息架构 |
+| nageoffer/ragenteval | `9d69c63cdca0bf730d8900c3076e0480e541360c` | 第 26～31 章评测实现来源，通过授权页面阅读 |
 
 完整资料锁见 [SOURCES.lock.md](evidence/SOURCES.lock.md)。
 
@@ -134,6 +150,10 @@ AsterRAG 基于 Apache-2.0 的 `nageoffer/ragent` 学习和二次开发。本教
 
 第 21～25 章的入口位于本页最上方。它们不另起一套系统，而是把第 1 章的 Agent → Knowledge Tool → Retrieval 区域放大，补足原章节对检索原理的讲解。
 
+### 第七部分：评测原理与面试篇
+
+第 26～31 章在系统外部建立观察视角，与第 21～25 章构成“能力如何工作 → 效果如何解释”的闭环。章节入口见本页新增评测篇，第一张评测总体图位于第 26 章。
+
 ## 附录
 
 | 附录 | 用法 |
@@ -142,6 +162,7 @@ AsterRAG 基于 Apache-2.0 的 `nageoffer/ragent` 学习和二次开发。本教
 | [附录 B：术语表](appendices/glossary.md) | 快速区分名字相似但 owner/寿命不同的概念 |
 | [附录 C：源码导航索引](appendices/source-index.md) | 从“想回答什么问题”反向找入口、主链和终局 |
 | [附录 D：检索实现备查](appendices/retrieval-implementation-notes.md) | 原理读懂后再查配置、源码入口和具体实现分支 |
+| [附录 E：评测实现备查](appendices/evaluation-implementation-notes.md) | 回查评测源码、指标口径与产品版本差异 |
 
 ## 图表索引
 
@@ -152,6 +173,9 @@ AsterRAG 基于 Apache-2.0 的 `nageoffer/ragent` 学习和二次开发。本教
 | [RAG 时序](assets/diagrams/rag-sequence.png) | 排队、短路、正常/取消/失败收尾 | `assets/diagrams/rag-sequence.mmd` |
 | [Agent 时序](assets/diagrams/agent-sequence.png) | RunGate、工具、State 和三路 finalizer | `assets/diagrams/agent-sequence.mmd` |
 | [状态所有权](assets/diagrams/state-ownership.png) | 持久事实、原对象、派生索引、协调态和进程态 | `assets/diagrams/state-ownership.mmd` |
+| [评测总体架构](assets/diagrams/evaluation-overview.png) | 被评系统、录制、评分与报告的分工 | `assets/diagrams/evaluation-overview.mmd` |
+| [评测录制时序](assets/diagrams/evaluation-recording.png) | 单题的聊天请求与检索旁路 | `assets/diagrams/evaluation-recording.mmd` |
+| [评测诊断路线](assets/diagrams/evaluation-diagnosis.png) | 从记录、路由和证据分析到生成 | `assets/diagrams/evaluation-diagnosis.mmd` |
 
 ## 每章的学习方法
 
@@ -184,6 +208,7 @@ AsterRAG 基于 Apache-2.0 的 `nageoffer/ragent` 学习和二次开发。本教
 | [reference-drift.md](evidence/reference-drift.md) | 作者旧课程/页面与冻结源码的版本漂移 |
 | [test-matrix.md](evidence/test-matrix.md) | 测试类存在、聚焦测试和 Live/集成边界 |
 | [retrieval-supplement-source-map.md](evidence/retrieval-supplement-source-map.md) | 第 21～25 章的实现事实、算法背景与静态复核范围 |
+| [evaluation-source-map.md](evidence/evaluation-source-map.md) | 第 26～31 章的流程、公式来源与教学演算边界 |
 | [diagram-qa.md](evidence/diagram-qa.md) | 5 张图的源文件、渲染与视觉检查 |
 
 详细写作计划见 [TUTORIAL_DEVELOPMENT_PLAN.md](TUTORIAL_DEVELOPMENT_PLAN.md)，实际执行记录见 [PROGRESS.md](PROGRESS.md)。

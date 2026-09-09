@@ -449,6 +449,8 @@ LightRAG workspace 是服务实例级，请求没有 per-request workspace；源
 
 准备固定 query、相关 Chunk judgment 与知识库版本；测 recall@K/MRR/nDCG、作用域命中、citation correctness，并记录配置/模型/索引版本。回答质量再单独人工或 LLM-as-judge，但不能把合同阈值当已有结果。
 
+这是一组设计选项，不代表配套评测器已实现所有指标。已有实现和公式演算见[第 26～31 章](../docs/26-evaluation-overview.md)，其中当前文档 Hit/Recall/MRR 与 RAGAS 的分工见第 29、30 章。
+
 ### Q100：面试结束前你希望面试官记住什么？
 
 不是“我用了很多中间件”，而是：

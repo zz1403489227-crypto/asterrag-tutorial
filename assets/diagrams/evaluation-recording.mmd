@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant D as 一道 EvalSample
+    participant R as Python 录制器
+    participant C as 聊天接口 /rag/v3/chat
+    participant E as 检索旁路 /rag/eval
+    participant F as EvalRecord 文件
+    D->>R: 问题与标准
+    R->>C: question
+    C-->>R: meta、回答增量、结束事件
+    R->>E: 同一个 question
+    E-->>R: 意图、文档、块文本
+    R->>F: 合并标准与两次请求的观测

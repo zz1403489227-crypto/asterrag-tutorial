@@ -43,6 +43,12 @@ CHAPTERS = [
     "23-lightrag-graph-retrieval.md",
     "24-hybrid-retrieval-to-evidence.md",
     "25-agentic-rag-interview-focus.md",
+    "26-evaluation-overview.md",
+    "27-evaluation-dataset.md",
+    "28-evaluation-recording.md",
+    "29-evaluation-deterministic-metrics.md",
+    "30-evaluation-ragas-judge.md",
+    "31-evaluation-diagnosis-and-interview.md",
 ]
 
 APPENDICES = [
@@ -50,6 +56,7 @@ APPENDICES = [
     "glossary.md",
     "source-index.md",
     "retrieval-implementation-notes.md",
+    "evaluation-implementation-notes.md",
 ]
 
 DIAGRAMS = [
@@ -58,6 +65,9 @@ DIAGRAMS = [
     "assets/diagrams/rag-sequence",
     "assets/diagrams/agent-sequence",
     "assets/diagrams/state-ownership",
+    "assets/diagrams/evaluation-overview",
+    "assets/diagrams/evaluation-recording",
+    "assets/diagrams/evaluation-diagnosis",
 ]
 
 REPO_PREFIXES = (

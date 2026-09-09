@@ -496,7 +496,7 @@ ES/LightRAG 写同步 best-effort，增加可重放 outbox/CDC 或“按关系 C
 
 ### 改进六：评测闭环
 
-建立固定 query、relevance judgment、Recall@K/MRR/nDCG 与答案引用正确性；没有这些数据前，不声称检索调优提升。
+作者已有独立的配套评测项目，完整机制见[第 26～31 章](26-evaluation-overview.md)。在它已有的文档指标与 RAGAS 基础上，可以进一步固定对照配置、增加所需的 nDCG/引用正确性或 Agent 轨迹评估；没有自己的对应记录前，不声称取得检索调优提升。
 
 这些方向必须说“我会/可以”，除非未来真的有 commit 和证据。
 
