@@ -52,6 +52,16 @@ CHAPTERS = [
     "32-trace-logs-and-evaluation.md",
     "33-observability-diagnosis-and-replay.md",
     "34-monitoring-to-evaluation-loop.md",
+    "35-backend-request-map.md",
+    "36-backend-spring-in-project.md",
+    "37-backend-persistence-in-project.md",
+    "38-backend-redis-in-project.md",
+    "39-backend-streaming-in-project.md",
+    "40-backend-java-interview.md",
+    "41-backend-spring-mybatis-interview.md",
+    "42-backend-database-interview.md",
+    "43-backend-redis-interview.md",
+    "44-backend-network-and-mock-interview.md",
 ]
 
 APPENDICES = [
@@ -60,6 +70,7 @@ APPENDICES = [
     "source-index.md",
     "retrieval-implementation-notes.md",
     "evaluation-implementation-notes.md",
+    "backend-source-and-interview-map.md",
 ]
 
 DIAGRAMS = [

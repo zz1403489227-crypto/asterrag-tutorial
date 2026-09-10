@@ -45,6 +45,34 @@
 
 写作范围见 [OBSERVABILITY_SUPPLEMENT_PLAN.md](OBSERVABILITY_SUPPLEMENT_PLAN.md)。题库仅用于选题归纳，不随教程复制原始数据库或题目集合。
 
+## 后端面试篇：项目怎么用 → 基础怎么答
+
+新增 **第 35～44 章**，严格分成两部分。用“提问 → 存储 → 检索 → 流式回答 → 停止/删除”串起 Java、Spring Boot、MyBatis-Plus、PostgreSQL、Redis 与 SSE，再沿面经真实主题展开基础追问。不是独立于项目的一套八股题库，也不要求运行系统。
+
+### 第一部分：项目应用（35～39）
+
+| 章节 | 讲透什么 |
+|---|---|
+| [35：一次问答的后端地图](docs/35-backend-request-map.md) | 总体架构、完整请求、身份/会话/任务与状态归宿 |
+| [36：Spring Boot 怎样组装服务](docs/36-backend-spring-in-project.md) | Maven 与运行边界、Bean/Mapper、条件装配、单例与每轮对象、用户上下文 |
+| [37：会话与知识怎样持久化](docs/37-backend-persistence-in-project.md) | 表结构、消息配对、JSONB、真实 SQL/索引、删会话事务、搜索副本同步 |
+| [38：Redis 怎样协调运行](docs/38-backend-redis-in-project.md) | 用户运行闸门、TTL/owner、跨节点取消、先取消后注册的竞态 |
+| [39：SSE 与并发收尾](docs/39-backend-streaming-in-project.md) | 事件桥、连接/业务终态、CAS/锁/volatile、线程池、超时与取消 |
+
+### 第二部分：基础追问（40～44）
+
+| 章节 | 重点追问 |
+|---|---|
+| [40：Java 基础](docs/40-backend-java-interview.md) | 集合、线程安全、可见性、锁、线程池异常、ThreadLocal、JVM |
+| [41：Spring 与 MyBatis](docs/41-backend-spring-mybatis-interview.md) | DI/生命周期、AOP、事务自调用/传播、参数绑定、缓存/分页/逻辑删除 |
+| [42：SQL、索引与事务](docs/42-backend-database-interview.md) | B+ 树、联合索引、慢 SQL、MVCC、锁、WAL、PostgreSQL/MySQL 差异 |
+| [43：Redis 基础](docs/43-backend-redis-interview.md) | 数据类型/编码、过期/淘汰、持久化、缓存一致性、锁/Lua/消息、语义缓存设计 |
+| [44：网络与模拟面试](docs/44-backend-network-and-mock-interview.md) | SSE/HTTP、重连/幂等、容量/重试、跨服务观测、三组完整追问 |
+
+首次读按 **35 → 36 → 37 → 38 → 39 → 40 → 41 → 42 → 43 → 44**。专项准备可以成对阅读：**Redis 38+43；数据库 37+42；Spring 36+41；Java/SSE 39+40+44**。后端仍服务于 Agent/RAG 主线，不扩展 RocketMQ、秒杀或分库分表专项。
+
+真实面经主题与源码定位见[后端对照附录](appendices/backend-source-and-interview-map.md)，写作安排见[增补计划](BACKEND_INTERVIEW_SUPPLEMENT_PLAN.md)。拟议优化与容量演算均标明为教学设计，不冒充现有实现或实验成果。
+
 ## 教程版本与资料基准
 
 | 资料 | 冻结版本 | 作用 |
@@ -175,6 +203,7 @@ AsterRAG 基于 Apache-2.0 的 `nageoffer/ragent` 学习和二次开发。本教
 | [附录 C：源码导航索引](appendices/source-index.md) | 从“想回答什么问题”反向找入口、主链和终局 |
 | [附录 D：检索实现备查](appendices/retrieval-implementation-notes.md) | 原理读懂后再查配置、源码入口和具体实现分支 |
 | [附录 E：评测实现备查](appendices/evaluation-implementation-notes.md) | 回查评测源码、指标口径与产品版本差异 |
+| [后端源码与面经对照](appendices/backend-source-and-interview-map.md) | 第 35～44 章的题源、选题取舍、冻结源码和关键结论核查 |
 
 ## 图表索引
 

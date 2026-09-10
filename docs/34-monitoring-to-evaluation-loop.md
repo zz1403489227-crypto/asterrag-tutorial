@@ -175,4 +175,4 @@
 
 这三章补上的，就是评测分数之后的那条主线：**结果可见 → 过程可查 → 原因可解释 → 改进可比较。**
 
-[上一章：定位问题与回放](33-observability-diagnosis-and-replay.md) · [回到评测全景](26-evaluation-overview.md) · [首页](../README.md)
+[上一章：定位问题与回放](33-observability-diagnosis-and-replay.md) · [下一篇：后端项目应用与基础追问](35-backend-request-map.md) · [回到评测全景](26-evaluation-overview.md) · [首页](../README.md)

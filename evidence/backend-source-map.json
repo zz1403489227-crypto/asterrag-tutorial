@@ -1,0 +1,369 @@
+{
+  "baseline": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+  "source_repository": "https://github.com/zz1403489227-crypto/AsterRAG",
+  "entries": [
+    {
+      "id": "S01",
+      "path": "pom.xml",
+      "needles": [
+        "<java.version>17</java.version>",
+        "<module>agent</module>",
+        "<dependencyManagement>"
+      ],
+      "chapters": [
+        35,
+        36,
+        40,
+        41
+      ]
+    },
+    {
+      "id": "S02",
+      "path": "bootstrap/src/main/java/com/nageoffer/ai/ragent/RagentApplication.java",
+      "needles": [
+        "@SpringBootApplication",
+        "@MapperScan",
+        "SpringApplication.run"
+      ],
+      "chapters": [
+        36
+      ]
+    },
+    {
+      "id": "S03",
+      "path": "bootstrap/src/main/resources/application.yaml",
+      "needles": [
+        "type: agent",
+        "sse-timeout-ms: 900000",
+        "type: pg",
+        "type: none"
+      ],
+      "chapters": [
+        35,
+        36,
+        38,
+        44
+      ]
+    },
+    {
+      "id": "S04",
+      "path": "agent/src/main/java/com/nageoffer/ai/ragent/agent/config/AgentEngineConfiguration.java",
+      "needles": [
+        "@Bean",
+        "agentChatModel()",
+        "agentStateStore("
+      ],
+      "chapters": [
+        36
+      ]
+    },
+    {
+      "id": "S05",
+      "path": "agent/src/main/java/com/nageoffer/ai/ragent/agent/config/ConditionalOnAgentEngine.java",
+      "needles": [
+        "havingValue = \"agent\""
+      ],
+      "chapters": [
+        36
+      ]
+    },
+    {
+      "id": "S06",
+      "path": "agent/src/main/java/com/nageoffer/ai/ragent/agent/config/ReActAgentProvider.java",
+      "needles": [
+        "volatile CachedAgent cached",
+        "synchronized (this)",
+        "new ActiveAgent",
+        "fingerprint()"
+      ],
+      "chapters": [
+        36,
+        40
+      ]
+    },
+    {
+      "id": "S07",
+      "path": "agent/src/main/java/com/nageoffer/ai/ragent/agent/controller/AgentChatController.java",
+      "needles": [
+        "SseEmitter",
+        "/agent/v1/chat",
+        "/agent/v1/stop"
+      ],
+      "chapters": [
+        35,
+        39,
+        44
+      ]
+    },
+    {
+      "id": "S08",
+      "path": "agent/src/main/java/com/nageoffer/ai/ragent/agent/service/impl/AgentChatServiceImpl.java",
+      "needles": [
+        "runGate.acquire",
+        "addUserMessage",
+        "taskManager.register",
+        "bindHandle",
+        "Schedulers.boundedElastic()"
+      ],
+      "chapters": [
+        35,
+        38,
+        39
+      ]
+    },
+    {
+      "id": "S09",
+      "path": "agent/src/main/java/com/nageoffer/ai/ragent/agent/service/impl/AgentConversationServiceImpl.java",
+      "needles": [
+        "ObjectProvider<ReActAgentProvider>",
+        "DuplicateKeyException",
+        "COUNT(*) AS turn_count",
+        "turns * 4 + 1",
+        "@Transactional(rollbackFor = Exception.class)",
+        "afterCommit"
+      ],
+      "chapters": [
+        36,
+        37,
+        41
+      ]
+    },
+    {
+      "id": "S10",
+      "path": "agent/src/main/java/com/nageoffer/ai/ragent/agent/dao/entity/AgentMessageDO.java",
+      "needles": [
+        "@TableLogic",
+        "AgentBlockListTypeHandler.class",
+        "replyToMessageId"
+      ],
+      "chapters": [
+        37,
+        41
+      ]
+    },
+    {
+      "id": "S11",
+      "path": "agent/src/main/java/com/nageoffer/ai/ragent/agent/dao/mapper/AgentStateMapper.java",
+      "needles": [
+        "#{payload}::jsonb",
+        "ON CONFLICT (user_id, session_id, state_key)",
+        "DELETE FROM t_agent_state"
+      ],
+      "chapters": [
+        37,
+        41,
+        42
+      ]
+    },
+    {
+      "id": "S12",
+      "path": "agent/src/main/java/com/nageoffer/ai/ragent/agent/state/PgAgentStateStore.java",
+      "needles": [
+        "AgentStateStore",
+        "selectPayload",
+        "upsert"
+      ],
+      "chapters": [
+        35,
+        37
+      ]
+    },
+    {
+      "id": "S13",
+      "path": "agent/src/main/java/com/nageoffer/ai/ragent/agent/service/handler/AgentRunGate.java",
+      "needles": [
+        "RBucket<String>",
+        "setIfAbsent(slotValue, ttl())",
+        "compareAndSet(slotValue, null)",
+        "getSseTimeoutMs() * 2"
+      ],
+      "chapters": [
+        38,
+        43
+      ]
+    },
+    {
+      "id": "S14",
+      "path": "framework/src/main/java/com/nageoffer/ai/ragent/framework/web/StreamTaskManager.java",
+      "needles": [
+        "expireAfterWrite(CANCEL_TTL)",
+        "Duration.ofMinutes(30)",
+        "maximumSize(10000)",
+        "ragent:stream:cancel",
+        "@PostConstruct",
+        "@PreDestroy",
+        "cancelByUser",
+        "isTaskCancelledInRedis"
+      ],
+      "chapters": [
+        35,
+        38,
+        40,
+        41
+      ]
+    },
+    {
+      "id": "S15",
+      "path": "agent/src/main/java/com/nageoffer/ai/ragent/agent/service/handler/AgentRunHandle.java",
+      "needles": [
+        "compareAndSet(false, true)",
+        "synchronized (releaseLock)",
+        "volatile Disposable",
+        "finally"
+      ],
+      "chapters": [
+        35,
+        39,
+        40
+      ]
+    },
+    {
+      "id": "S16",
+      "path": "agent/src/main/java/com/nageoffer/ai/ragent/agent/service/handler/AgentStreamEventBridge.java",
+      "needles": [
+        "synchronized (stateLock)",
+        "AgentMessageStatus.INTERRUPTED",
+        "Agent 终答落库失败",
+        "return null"
+      ],
+      "chapters": [
+        37,
+        39
+      ]
+    },
+    {
+      "id": "S17",
+      "path": "framework/src/main/java/com/nageoffer/ai/ragent/framework/web/SseEmitterSender.java",
+      "needles": [
+        "AtomicBoolean closed",
+        "compareAndSet(false, true)",
+        "completeWithError"
+      ],
+      "chapters": [
+        39
+      ]
+    },
+    {
+      "id": "S18",
+      "path": "system/src/main/java/com/nageoffer/ai/ragent/user/config/UserContextInterceptor.java",
+      "needles": [
+        "StpUtil.getLoginIdAsString()",
+        "UserContext.set",
+        "UserContext.clear()",
+        "DispatcherType.ASYNC"
+      ],
+      "chapters": [
+        36
+      ]
+    },
+    {
+      "id": "S19",
+      "path": "framework/src/main/java/com/nageoffer/ai/ragent/framework/context/UserContext.java",
+      "needles": [
+        "TransmittableThreadLocal",
+        "CONTEXT.remove()"
+      ],
+      "chapters": [
+        36,
+        40
+      ]
+    },
+    {
+      "id": "S20",
+      "path": "framework/src/main/java/com/nageoffer/ai/ragent/framework/config/DataBaseConfiguration.java",
+      "needles": [
+        "PaginationInnerInterceptor(DbType.POSTGRE_SQL)",
+        "MyMetaObjectHandler"
+      ],
+      "chapters": [
+        36,
+        41
+      ]
+    },
+    {
+      "id": "S21",
+      "path": "rag/src/main/java/com/nageoffer/ai/ragent/rag/config/ThreadPoolExecutorConfig.java",
+      "needles": [
+        "ragRetrievalExecutor()",
+        "SynchronousQueue",
+        "LinkedBlockingQueue<>(200)",
+        "CallerRunsPolicy",
+        "AbortPolicy",
+        "TtlExecutors"
+      ],
+      "chapters": [
+        39,
+        40
+      ]
+    },
+    {
+      "id": "S22",
+      "path": "rag/src/main/java/com/nageoffer/ai/ragent/rag/core/retrieval/MultiChannelRetrievalEngine.java",
+      "needles": [
+        "CompletableFuture.supplyAsync",
+        "future.orTimeout",
+        "exceptionally",
+        "channel.isEnabled(context)"
+      ],
+      "chapters": [
+        39
+      ]
+    },
+    {
+      "id": "S23",
+      "path": "rag/src/main/java/com/nageoffer/ai/ragent/rag/core/vector/PgVectorStoreService.java",
+      "needles": [
+        "jdbcTemplate.batchUpdate",
+        "?::jsonb",
+        "?::vector",
+        "metadata->>'doc_id'"
+      ],
+      "chapters": [
+        37,
+        42
+      ]
+    },
+    {
+      "id": "S24",
+      "path": "rag/src/main/java/com/nageoffer/ai/ragent/rag/core/vector/decorator/KeywordSyncingVectorStoreService.java",
+      "needles": [
+        "delegate.indexDocumentChunks",
+        "syncKeyword",
+        "log.warn"
+      ],
+      "chapters": [
+        37,
+        43
+      ]
+    },
+    {
+      "id": "S25",
+      "path": "rag/src/main/java/com/nageoffer/ai/ragent/rag/core/vector/decorator/GraphSyncingVectorStoreService.java",
+      "needles": [
+        "delegate.updateChunk",
+        "concatContent(chunks)",
+        "lightRagClient.deleteByDoc",
+        "log.warn"
+      ],
+      "chapters": [
+        37
+      ]
+    },
+    {
+      "id": "S26",
+      "path": "resources/database/schema_pg.sql",
+      "needles": [
+        "uk_agent_conversation_user",
+        "(conversation_id, user_id, create_time)",
+        "PRIMARY KEY (user_id, session_id, state_key)",
+        "WHERE invalid_at IS NULL",
+        "USING gin(metadata)",
+        "USING hnsw (embedding vector_cosine_ops)"
+      ],
+      "chapters": [
+        37,
+        42
+      ]
+    }
+  ]
+}
