@@ -49,6 +49,9 @@ CHAPTERS = [
     "29-evaluation-deterministic-metrics.md",
     "30-evaluation-ragas-judge.md",
     "31-evaluation-diagnosis-and-interview.md",
+    "32-trace-logs-and-evaluation.md",
+    "33-observability-diagnosis-and-replay.md",
+    "34-monitoring-to-evaluation-loop.md",
 ]
 
 APPENDICES = [

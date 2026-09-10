@@ -164,4 +164,4 @@
 
 源码入口：[报告与复核](https://gitcode.net/nageoffer/ragenteval/-/blob/9d69c63cdca0bf730d8900c3076e0480e541360c/eval/rag/report/markdown.py)、[A/B 对比](https://gitcode.net/nageoffer/ragenteval/-/blob/9d69c63cdca0bf730d8900c3076e0480e541360c/eval/rag/report/diff.py)、[CLI](https://gitcode.net/nageoffer/ragenteval/-/blob/9d69c63cdca0bf730d8900c3076e0480e541360c/eval/common/cli.py)。
 
-[上一章：RAGAS](30-evaluation-ragas-judge.md) · [实现备查](../appendices/evaluation-implementation-notes.md) · [首页](../README.md)
+[上一章：RAGAS](30-evaluation-ragas-judge.md) · [下一章：Trace、日志与指标](32-trace-logs-and-evaluation.md) · [实现备查](../appendices/evaluation-implementation-notes.md) · [首页](../README.md)

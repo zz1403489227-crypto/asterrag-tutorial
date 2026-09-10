@@ -33,6 +33,18 @@
 
 这六章研究作者的 `nageoffer/ragenteval`，不是把评测器当成产品内模块。源码入口与版本细节统一收在[附录 E](appendices/evaluation-implementation-notes.md)，计划见 [EVALUATION_SUPPLEMENT_PLAN.md](EVALUATION_SUPPLEMENT_PLAN.md)。
 
+## 评测进阶：Trace、日志与问题闭环
+
+接着读 **32 → 33 → 34**。这三章参考面试题库中的追问主题，讲理想情况下怎样观察、排查和改进，不要求运行项目。用同一条手机参数问答串联调用树、证据变迁、耗时分析与案例回流；不把设计示例写成已有部署或实测成绩。
+
+| 章节 | 重点 |
+|---|---|
+| [32：Trace、日志与指标](docs/32-trace-logs-and-evaluation.md) | 从零理解三者分工、Span 树、跨服务/会话关联、实际模型材料与 Agent 轨迹 |
+| [33：定位问题与回放](docs/33-observability-diagnosis-and-replay.md) | 答错、变慢、重复调用的完整排查；结构化日志、证据与根因；回看、回放、重跑 |
+| [34：监控与评测闭环](docs/34-monitoring-to-evaluation-loop.md) | 指标分母、告警、采样、隐私；线上记录怎样变成评估集；无真值与回归设计 |
+
+写作范围见 [OBSERVABILITY_SUPPLEMENT_PLAN.md](OBSERVABILITY_SUPPLEMENT_PLAN.md)。题库仅用于选题归纳，不随教程复制原始数据库或题目集合。
+
 ## 教程版本与资料基准
 
 | 资料 | 冻结版本 | 作用 |
