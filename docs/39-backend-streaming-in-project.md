@@ -2,6 +2,8 @@
 
 > 第一部分 · 项目应用。面经入口：SSE 高并发、线程池、任务异常、线程终止、线程安全。
 
+配套问答：[AgentRunHandle 与唯一收尾](45-agent-request-study-qa.md#finalization) · [从网络帧理解 SSE](45-agent-request-study-qa.md#sse) · [冻结版与新上游的确认/重试差异](45-agent-request-study-qa.md#version-diff)。
+
 ## 39.1 Controller 返回了，不代表回答结束了
 
 普通接口大致是“算出完整结果 → 返回 JSON → 请求完成”。Agent 回答可能等待检索、多次模型调用和工具执行，用户又希望尽早看到第一段文字。SSE 让服务器在一条 HTTP 响应上持续发送事件。
@@ -42,6 +44,8 @@ compareAndSet(false, true)
 普通布尔变量的“先判断再赋值”是两个动作，两个线程可能同时读到 false；CAS 把条件判断和状态改变合为原子竞争，只有一个能把 false 改成 true。
 
 这里保证的是**本轮句柄的收尾入口至多执行一次**。它不是跨进程 exactly-once，也不保证结束动作一定成功。标志先置为已结算，数据库插入随后可能失败；代码没有把标志重新设回 false 自动重跑整轮收尾。
+
+具体到冻结版的助手消息写入，`persistAssistantMessage` 自己捕获异常并返回 null，正常收尾体仍可能发送 messageId 为 null 的 finish 与 done。因此“收到结束事件”和“刷新后能查到已持久化消息”也必须分开判断。另一个版本边界是：本版 `onError` 记录错误后异常关闭通道，没有较新上游的中断消息落库与 finish/done 路径。
 
 为什么 finally 重要？因为即使业务结束动作出异常，任务注册与闸门仍需要释放。否则用户可能明明看到失败，却一直被“正在运行”挡住。
 

@@ -2,6 +2,8 @@
 
 > 第一部分 · 项目应用。面经入口：Spring Boot 项目亮点、依赖注入、Bean 单例、AOP。
 
+配套问答：[登录后为什么还要带 token](45-agent-request-study-qa.md#identity) · [Maven 与 Spring Boot 从构建到运行](45-agent-request-study-qa.md#boot-maven)。
+
 ## 36.1 Maven、Spring Boot、AgentScope 各管哪一段
 
 从拿到源码到处理一次提问，中间有三个不同的问题。
