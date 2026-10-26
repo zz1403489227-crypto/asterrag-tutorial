@@ -4,6 +4,8 @@
 
 ## 学习问答：从登录到一轮 Agent 结束
 
+公开阅读地址：[项目源码](https://github.com/zz1403489227-crypto/AsterRAG) · [本教程](https://github.com/zz1403489227-crypto/asterrag-tutorial)。教程不包含官方私有评测仓库源码、完整评测集或受限课程正文；指向 GitCode 评测实现的来源链接仍可能需要作者授权。公开本教程不改变第三方资料的访问权限和许可证。
+
 [第 45 章：身份、运行槽、收尾、SSE 与启动装配](docs/45-agent-request-study-qa.md)整理了 2026-09-11 的五组学习问答与后续澄清：token 为什么仍要放入请求头、UserContext 的寿命、用户级 Redis 运行槽、CAS 为什么不保证写库成功、SSE 如何显示过程，以及 Spring Boot/Maven 的分工。
 
 按“具体请求 → 责任与状态 → 代码顺序 → 失败边界”阅读，并可跳回第 36、38、39 章。正文保持原冻结源码；较新上游的工具确认、POST SSE、取消自动重试等变化单列[版本对照](docs/45-agent-request-study-qa.md#version-diff)。[源码核对记录](evidence/request-study-source-review.md)附固定提交链接。

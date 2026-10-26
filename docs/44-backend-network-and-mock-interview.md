@@ -135,4 +135,4 @@ Spring Boot 可以管理 Java 客户端、配置、接口和调用逻辑，但�
 
 本章面经入口：403、726/727/729、783～789、1094、1103、1444～1449、1474 等，详见[后端源码与面经对照](../appendices/backend-source-and-interview-map.md)。
 
-[上一章](43-backend-redis-interview.md) · [下一章：本地 Qwen 模型分流](46-local-qwen-model-routing.md) · [回看项目总流程](35-backend-request-map.md) · [返回首页](../README.md)
+[上一章](43-backend-redis-interview.md) · [下一章：Agent 请求学习问答](45-agent-request-study-qa.md) · [回看项目总流程](35-backend-request-map.md) · [返回首页](../README.md)

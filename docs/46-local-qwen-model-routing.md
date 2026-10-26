@@ -312,4 +312,4 @@ Token 也可独立演算：两次工具内处理共 30,800 Token，其中 13,200
 - [官方评测 runner](https://gitcode.net/nageoffer/ragenteval/-/blob/9d69c63cdca0bf730d8900c3076e0480e541360c/eval/rag/pipeline/runner.py)与[裁判实现](https://gitcode.net/nageoffer/ragenteval/-/blob/9d69c63cdca0bf730d8900c3076e0480e541360c/eval/rag/metrics/ragas_judge.py)：区分产品、旁路和裁判费用。
 - [LightRAG 上游实现](https://github.com/HKUDS/LightRAG/blob/main/lightrag/operate.py)：用于理解抽取、补充抽取、汇总与关键词处理，不能替代实际部署版本的确认。
 
-[上一章](44-backend-network-and-mock-interview.md) · [回看 Agent 工具](15-agent-tools.md) · [回看模型裁判](30-evaluation-ragas-judge.md) · [返回首页](../README.md)
+[上一章](45-agent-request-study-qa.md) · [回看 Agent 工具](15-agent-tools.md) · [回看模型裁判](30-evaluation-ragas-judge.md) · [返回首页](../README.md)

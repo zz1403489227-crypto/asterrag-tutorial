@@ -475,4 +475,4 @@ Maven 不负责逐个分发线上请求。冻结配置默认端口是 **9090**�
 7. 新上游的 confirm 为什么又有一条流？——确认结果经新 POST 提交，继续执行的事件由该请求的新响应返回。
 8. JAR 已打包为什么接口还不能访问？——需要应用真正启动并完成装配、监听；Maven package 本身不代表服务运行。
 
-[回到后端请求地图](35-backend-request-map.md) · [本章源码与版本核对](../evidence/request-study-source-review.md) · [返回首页](../README.md)
+[下一章：本地 Qwen 模型分流](46-local-qwen-model-routing.md) · [回到后端请求地图](35-backend-request-map.md) · [本章源码与版本核对](../evidence/request-study-source-review.md) · [返回首页](../README.md)

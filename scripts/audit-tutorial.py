@@ -62,6 +62,7 @@ CHAPTERS = [
     "42-backend-database-interview.md",
     "43-backend-redis-interview.md",
     "44-backend-network-and-mock-interview.md",
+    "45-agent-request-study-qa.md",
     "46-local-qwen-model-routing.md",
 ]
 
