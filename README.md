@@ -73,6 +73,12 @@
 
 真实面经主题与源码定位见[后端对照附录](appendices/backend-source-and-interview-map.md)，写作安排见[增补计划](BACKEND_INTERVIEW_SUPPLEMENT_PLAN.md)。拟议优化与容量演算均标明为教学设计，不冒充现有实现或实验成果。
 
+## 模型分流与成本取舍
+
+新增[第 46 章：为什么让本地 Qwen 分担部分模型调用](docs/46-local-qwen-model-routing.md)。从一次固定 RAG 与 Agent 问答出发，解释任务级模型分工、Qwen 的选择依据、接入边界、云端 Token 与费用的不同口径，以及简历估算如何在以后替换为实测结果。
+
+本章为拟议改造：保留云端回答和 Agent 决策，将改写、意图识别、图谱关键词与摘要作为本地化候选。固定 RAG 25%～40%、Agent 10%～25% 的云端 LLM 费用降幅为带假设的规划区间，不是已实现成绩。源码入口见[模型调用清单](appendices/model-routing-source-map.md)。推荐接在第 15、16、30、32 章之后阅读。
+
 ## 教程版本与资料基准
 
 | 资料 | 冻结版本 | 作用 |

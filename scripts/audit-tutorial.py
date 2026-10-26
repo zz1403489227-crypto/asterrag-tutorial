@@ -62,6 +62,7 @@ CHAPTERS = [
     "42-backend-database-interview.md",
     "43-backend-redis-interview.md",
     "44-backend-network-and-mock-interview.md",
+    "46-local-qwen-model-routing.md",
 ]
 
 APPENDICES = [
@@ -71,6 +72,7 @@ APPENDICES = [
     "retrieval-implementation-notes.md",
     "evaluation-implementation-notes.md",
     "backend-source-and-interview-map.md",
+    "model-routing-source-map.md",
 ]
 
 DIAGRAMS = [
