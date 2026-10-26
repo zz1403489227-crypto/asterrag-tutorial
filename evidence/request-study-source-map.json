@@ -1,0 +1,230 @@
+{
+  "baseline": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+  "upstream_comparison": "ca93991abe4ffd838e48d600d7ada24e010a884f",
+  "entries": [
+    {
+      "repository": "AsterRAG",
+      "commit": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+      "path": "system/src/main/java/com/nageoffer/ai/ragent/user/service/impl/AuthServiceImpl.java",
+      "line": 41,
+      "needle": "public LoginVO login(",
+      "sha256": "be5fa8527008adc3a4584c3273a077051ae318888599f6b7ea12031354d5b7fa"
+    },
+    {
+      "repository": "AsterRAG",
+      "commit": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+      "path": "system/src/main/java/com/nageoffer/ai/ragent/user/config/SaTokenConfig.java",
+      "line": 57,
+      "needle": "public void addInterceptors(",
+      "sha256": "3f0ce36a9ca15a3f00ef4df406e2cec0cfc704718f3a0772083e32c2c95e0ce8"
+    },
+    {
+      "repository": "AsterRAG",
+      "commit": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+      "path": "system/src/main/java/com/nageoffer/ai/ragent/user/config/UserContextInterceptor.java",
+      "line": 62,
+      "needle": "public boolean preHandle(",
+      "sha256": "6aa3ab6c6fa84506e20b960388351165f31866e6d426d3be7c62d68b93060ae0"
+    },
+    {
+      "repository": "AsterRAG",
+      "commit": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+      "path": "framework/src/main/java/com/nageoffer/ai/ragent/framework/context/UserContext.java",
+      "line": 28,
+      "needle": "TransmittableThreadLocal<LoginUser>",
+      "sha256": "89aafea76baac5b5f8aa0b71b58108de855d711e04b46909ea2dbbd7cd96db10"
+    },
+    {
+      "repository": "AsterRAG",
+      "commit": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+      "path": "frontend/src/stores/authStore.ts",
+      "line": 39,
+      "needle": "storage.setToken(user.token)",
+      "sha256": "b0c8a1b3365fdd0547b6c08ee47b32a24a843e2e95493af27f52d85badb48602"
+    },
+    {
+      "repository": "AsterRAG",
+      "commit": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+      "path": "frontend/src/utils/storage.ts",
+      "line": 3,
+      "needle": "const TOKEN_KEY",
+      "sha256": "bece1a14fb810d75ea1b991b5f64e56960c2671239dab70f1594e2b858a690f7"
+    },
+    {
+      "repository": "AsterRAG",
+      "commit": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+      "path": "frontend/src/stores/agentChatStore.ts",
+      "line": 648,
+      "needle": "headers: token ?",
+      "sha256": "a4fda55238c8d4f751b2402dadcf1f033fe5bc69d94b435904da0b8bd50a7ba4"
+    },
+    {
+      "repository": "AsterRAG",
+      "commit": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+      "path": "agent/src/main/java/com/nageoffer/ai/ragent/agent/service/impl/AgentConversationServiceImpl.java",
+      "line": 113,
+      "needle": ".eq(AgentConversationDO::getUserId, userId)",
+      "sha256": "e5f204c0f16a01b177b28c0ec8ef24a5d985b72f10fcd1c2bb9887dc9452a7ad"
+    },
+    {
+      "repository": "AsterRAG",
+      "commit": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+      "path": "framework/src/main/java/com/nageoffer/ai/ragent/framework/web/StreamTaskManager.java",
+      "line": 142,
+      "needle": "public void cancelByUser(",
+      "sha256": "94e2dd973eb1d044c7d46cf5ce4e1c57ceff3e2f48d8674ba0293973a282262f"
+    },
+    {
+      "repository": "AsterRAG",
+      "commit": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+      "path": "agent/src/main/java/com/nageoffer/ai/ragent/agent/service/handler/AgentRunGate.java",
+      "line": 53,
+      "needle": "public Runnable acquire(",
+      "sha256": "bd7ae06a925ef9e9317f62f399fff7f8b733e656cf0baddb47289eeb01e2e398"
+    },
+    {
+      "repository": "AsterRAG",
+      "commit": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+      "path": "agent/src/main/java/com/nageoffer/ai/ragent/agent/service/impl/AgentChatServiceImpl.java",
+      "line": 107,
+      "needle": "runHandle.onRelease(releaseGate)",
+      "sha256": "d09c931bc29d02a6d76e62429d3497b1bcf0f7a0f3e1a7a2c73cf81249a42186"
+    },
+    {
+      "repository": "AsterRAG",
+      "commit": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+      "path": "agent/src/main/java/com/nageoffer/ai/ragent/agent/memory/AgentMemoryPipeline.java",
+      "line": 83,
+      "needle": "memoryRepository.claim(",
+      "sha256": "40789829110e803cd6bef77ccc3f63e5390a4149606fb40955f02fb081efd25d"
+    },
+    {
+      "repository": "AsterRAG",
+      "commit": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+      "path": "agent/src/main/java/com/nageoffer/ai/ragent/agent/service/handler/AgentRunHandle.java",
+      "line": 137,
+      "needle": "private boolean settle(",
+      "sha256": "87efa3feee2fff4509cbaedcb4fafe062d815b5c713e845125ea29bef6b7aab0"
+    },
+    {
+      "repository": "AsterRAG",
+      "commit": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+      "path": "agent/src/main/java/com/nageoffer/ai/ragent/agent/service/handler/AgentStreamEventBridge.java",
+      "line": 321,
+      "needle": "private String persistAssistantMessage(",
+      "sha256": "105e53089bd83c38338d4e0e69530521446c9404a02e1ab34cf46df6d95d5276"
+    },
+    {
+      "repository": "AsterRAG",
+      "commit": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+      "path": "framework/src/main/java/com/nageoffer/ai/ragent/framework/web/SseEmitterSender.java",
+      "line": 88,
+      "needle": "public void complete()",
+      "sha256": "ffda410655ba248ee40dd6980678e4a730382a69065112c36be7440c0a48e5ea"
+    },
+    {
+      "repository": "AsterRAG",
+      "commit": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+      "path": "agent/src/main/java/com/nageoffer/ai/ragent/agent/controller/AgentChatController.java",
+      "line": 44,
+      "needle": "@GetMapping(value",
+      "sha256": "dfcb02e25d2dd4c3fe7ba4f34c33248d35f2d2495c118cc0d1a2200a6808bef5"
+    },
+    {
+      "repository": "AsterRAG",
+      "commit": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+      "path": "agent/src/main/java/com/nageoffer/ai/ragent/agent/enums/AgentSSEEventType.java",
+      "line": 26,
+      "needle": "public enum AgentSSEEventType",
+      "sha256": "a00bd3650fbc0b859cc56b3bd650890aabe56aa02853a3ba998cd8100615e82c"
+    },
+    {
+      "repository": "AsterRAG",
+      "commit": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+      "path": "frontend/src/hooks/useAgentStream.ts",
+      "line": 137,
+      "needle": "async function streamWithRetry(",
+      "sha256": "c13f30fc4d4d88f9871fa996fd9c176bae20cfc8b710c9b02b9175d8b4df0738"
+    },
+    {
+      "repository": "AsterRAG",
+      "commit": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+      "path": "agent/src/main/java/com/nageoffer/ai/ragent/agent/service/impl/AgentChatServiceImpl.java",
+      "line": 169,
+      "needle": "private void bindEmitterLifecycle(",
+      "sha256": "d09c931bc29d02a6d76e62429d3497b1bcf0f7a0f3e1a7a2c73cf81249a42186"
+    },
+    {
+      "repository": "AsterRAG",
+      "commit": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+      "path": "pom.xml",
+      "line": 53,
+      "needle": "<dependencyManagement>",
+      "sha256": "758e8586dc1866f2ed6d7721abac17961138f9cb22c2aaaf465ab3fdc85ffd25"
+    },
+    {
+      "repository": "AsterRAG",
+      "commit": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+      "path": "bootstrap/pom.xml",
+      "line": 47,
+      "needle": "<build>",
+      "sha256": "7f86a507480e1c767cf4db4dd3bc2701a40e42317a04520eecaf55ff6e934d3e"
+    },
+    {
+      "repository": "AsterRAG",
+      "commit": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+      "path": "bootstrap/src/main/java/com/nageoffer/ai/ragent/RagentApplication.java",
+      "line": 29,
+      "needle": "@SpringBootApplication",
+      "sha256": "005b2c674aba0d8e79c8365c9b3957ad13b3defd683ae7fafefa274428903b2c"
+    },
+    {
+      "repository": "AsterRAG",
+      "commit": "98894c2c42c015a3c874c6b3c986ac863c85b731",
+      "path": "bootstrap/src/main/resources/application.yaml",
+      "line": 1,
+      "needle": "server:",
+      "sha256": "5a1383686c507c678e9d0ed968b90623c35a44ad11547be317dd7af16b894f1f"
+    },
+    {
+      "repository": "ragent",
+      "commit": "ca93991abe4ffd838e48d600d7ada24e010a884f",
+      "path": "frontend/src/hooks/useAgentStream.ts",
+      "line": 153,
+      "needle": "async function streamOnce(",
+      "sha256": "71ca2d4746be4087db0aca0a418d7cd771c6a572a098c103d6adbabdd72c33b2"
+    },
+    {
+      "repository": "ragent",
+      "commit": "ca93991abe4ffd838e48d600d7ada24e010a884f",
+      "path": "agent/src/main/java/com/nageoffer/ai/ragent/agent/controller/AgentChatController.java",
+      "line": 55,
+      "needle": "public SseEmitter confirm(",
+      "sha256": "f0a593109911de014d853943bbaf57093c5c50d8956ad1eabe1e310c207e5746"
+    },
+    {
+      "repository": "ragent",
+      "commit": "ca93991abe4ffd838e48d600d7ada24e010a884f",
+      "path": "agent/src/main/java/com/nageoffer/ai/ragent/agent/enums/AgentSSEEventType.java",
+      "line": 41,
+      "needle": "BLOCK(\"block\")",
+      "sha256": "eed33b880dc78ab392f4d3e27dc43bc887a3733808c8f771dde1f7620fc7e8f6"
+    },
+    {
+      "repository": "ragent",
+      "commit": "ca93991abe4ffd838e48d600d7ada24e010a884f",
+      "path": "agent/src/main/java/com/nageoffer/ai/ragent/agent/service/handler/AgentStreamEventBridge.java",
+      "line": 206,
+      "needle": "public void onError(",
+      "sha256": "d4b717e47dda14a0a3186b2b7d29cb643b7ded0b3ac50531e8f8d6510a2984c2"
+    },
+    {
+      "repository": "ragent",
+      "commit": "ca93991abe4ffd838e48d600d7ada24e010a884f",
+      "path": "pom.xml",
+      "line": 17,
+      "needle": "<spring-boot.version>",
+      "sha256": "db9e1f3f1aa6d14b502b15ffa0e2b074ea9a22d37b5bf4cd8e72395787d823b0"
+    }
+  ]
+}

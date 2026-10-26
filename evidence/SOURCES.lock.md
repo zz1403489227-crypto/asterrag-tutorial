@@ -95,3 +95,13 @@ done
 - 原理补充：RAGAS 官方 v0.2.14 指标文档与相应标签源码；只用作算法解释参考，不推断实际安装版本。
 - 索引：[evaluation-source-map.md](evaluation-source-map.md)。
 - 写作边界：不运行评测，不上传输入材料给模型裁判，不声称已有实测成绩。
+
+## 8. 第 45 章学习问答的上游差异对照
+
+- 访问日期：2026-09-11。
+- 对照仓库：`https://github.com/nageoffer/ragent`。
+- 固定提交：`ca93991abe4ffd838e48d600d7ada24e010a884f`。
+- 范围：AgentChatController、AgentStreamEventBridge、AgentSSEEventType、useAgentStream.ts、根 pom.xml 五个文件。
+- 用途：解释聊天回答涉及的工具确认、新 POST SSE、错误收尾与客户端重试变化。
+- 本项不改变第 1 节 AsterRAG 主实现基线，也不覆盖第 2 节同源历史锁；不把对照能力迁入产品。
+- 核对记录：[request-study-source-review.md](request-study-source-review.md)，逐文件 SHA-256：[request-study-source-map.json](request-study-source-map.json)。
